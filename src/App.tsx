@@ -4,7 +4,7 @@ import { UploadPanel } from './components/UploadPanel'
 import { PreviewPanel } from './components/PreviewPanel'
 import { ControlPanel } from './components/ControlPanel'
 import { ExportPanel } from './components/ExportPanel'
-import Header from './components/Header'
+import { Header } from './components/Header'
 import { signInWithGoogle, openLemonSqueezyCheckout } from './lib/commercial'
 
 function App() {
