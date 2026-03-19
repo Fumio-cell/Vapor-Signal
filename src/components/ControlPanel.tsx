@@ -93,6 +93,11 @@ export const ControlPanel: React.FC = () => {
                 </div>
 
                 <div className="slider-group">
+                    <label>Beat Sensitivity: {recipe.beatSensitivity.toFixed(2)}</label>
+                    <input type="range" min="0" max="2" step="0.01" value={recipe.beatSensitivity} onChange={handleSlider('beatSensitivity')} />
+                </div>
+
+                <div className="slider-group">
                     <label>Seed: {recipe.seed}</label>
                     <input type="number" value={recipe.seed} onChange={(e) => updateRecipe({ seed: parseInt(e.target.value) || 0 })} />
                 </div>

@@ -22,6 +22,7 @@ uniform float uDirection; // radians
 uniform float uSpread;
 uniform float uDensity;
 uniform float uSpeed;
+uniform float uBeatSensitivity;
 
 // Analysis data
 uniform float uSpectralFlux;
@@ -88,7 +89,7 @@ void main() {
 
     // uSpectralFlux dynamically boosts the fluid speed along its NATURAL path (no exploding)
     // The web dances faster, but doesn't get destroyed
-    float beatPulse = 1.0 + uSpectralFlux * 0.001; 
+    float beatPulse = 1.0 + (uSpectralFlux * 0.05) * uBeatSensitivity; 
     
     // uSpread Dampens the stringy fluid (curl noise) and introduces pure Brownian diffusion.
     // High spread = uniform fog. Low spread = stringy fluid lines.

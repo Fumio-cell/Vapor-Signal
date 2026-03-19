@@ -14,6 +14,7 @@ export interface RecipeSettings {
     focusDistance: number;
     focalRange: number;
     blurStrength: number;
+    beatSensitivity: number;
     orderUser?: number;
     turbulenceUser?: number;
 }
@@ -71,6 +72,7 @@ export const useAppStore = create<AppState>((set) => ({
         focusDistance: 2.0,
         focalRange: 0.5,
         blurStrength: 15.0,
+        beatSensitivity: 0.5,
     },
 
     setStatus: (status, progress = 0, errorMessage?: string) =>

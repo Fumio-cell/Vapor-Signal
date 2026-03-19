@@ -217,6 +217,7 @@ export class RendererContext {
         this.gl.uniform1f(this.gl.getUniformLocation(this.computeProgram, 'uDirection'), recipe.direction * Math.PI / 180.0);
         this.gl.uniform1f(this.gl.getUniformLocation(this.computeProgram, 'uSpread'), recipe.spread);
         this.gl.uniform1f(this.gl.getUniformLocation(this.computeProgram, 'uSpeed'), recipe.speed);
+        this.gl.uniform1f(this.gl.getUniformLocation(this.computeProgram, 'uBeatSensitivity'), recipe.beatSensitivity);
 
         this.gl.uniform1f(this.gl.getUniformLocation(this.computeProgram, 'uSpectralFlux'), analysis.spectralFlux);
         this.gl.uniform1f(this.gl.getUniformLocation(this.computeProgram, 'uTurbulence'), analysis.turbulence);
