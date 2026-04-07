@@ -1,9 +1,8 @@
 import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { toBlobURL } from '@ffmpeg/util';
+import coreURL from '@ffmpeg/core?url';
+import wasmURL from '@ffmpeg/core/wasm?url';
 
 let ffmpegInstance: FFmpeg | null = null;
-
-const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
 
 export async function getFFmpeg(): Promise<FFmpeg> {
     if (!ffmpegInstance) {
@@ -16,8 +15,8 @@ export async function getFFmpeg(): Promise<FFmpeg> {
 
         try {
             await ffmpegInstance.load({
-                coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-                wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+                coreURL,
+                wasmURL,
             });
         } catch (err: any) {
             const errorMsg = err?.message || "Unknown error (likely browser security related)";
