@@ -20,8 +20,9 @@ export async function getFFmpeg(): Promise<FFmpeg> {
                 wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
             });
         } catch (err: any) {
+            const errorMsg = err?.message || "Unknown error (likely browser security related)";
             console.error("FFmpeg Load Error:", err);
-            throw new Error(`Failed to load FFmpeg core: ${err.message}. This usually happens due to missing COOP/COEP headers or network issues.`);
+            throw new Error(`Failed to load FFmpeg core: ${errorMsg}. This usually happens due to missing COOP/COEP headers or network issues.`);
         }
     }
     return ffmpegInstance;
