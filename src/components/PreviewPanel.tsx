@@ -3,7 +3,7 @@ import { useAppStore } from '../store/useAppStore';
 import { RendererContext } from '../lib/renderer/RendererContext';
 
 export const PreviewPanel: React.FC = () => {
-    const { status, recipe, audioFile, audioBuffer, analysisFrames, orderEstimated, turbulenceEstimated } = useAppStore();
+    const { status, recipe, audioFile, audioBuffer, analysisFrames, orderEstimated, turbulenceEstimated, previewQuality, setPreviewQuality } = useAppStore();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const rendererRef = useRef<RendererContext | null>(null);
     const reqRef = useRef<number>(0);
@@ -113,13 +113,19 @@ export const PreviewPanel: React.FC = () => {
                     </>
                 )}
 
-                <canvas ref={canvasRef} width="1920" height="1080" className="mist-canvas" />
+                <canvas ref={canvasRef} width={previewQuality === 'Live' ? 960 : 1920} height={previewQuality === 'Live' ? 540 : 1080} className="mist-canvas" />
             </div>
 
             <div className="preview-controls">
-                <label>
-                    <input type="checkbox" checked={recipe.showMist} onChange={(e) => useAppStore.getState().updateRecipe({ showMist: e.target.checked })} disabled={!!webglError} /> Mist Layer
-                </label>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <label>
+                        <input type="checkbox" checked={recipe.showMist} onChange={(e) => useAppStore.getState().updateRecipe({ showMist: e.target.checked })} disabled={!!webglError} /> Mist Layer
+                    </label>
+                    <select value={previewQuality} onChange={(e) => setPreviewQuality(e.target.value as any)} disabled={!!webglError} style={{ padding: '2px 8px', borderRadius: '4px', background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>
+                        <option value="Live">Live Proxies (Fast)</option>
+                        <option value="High">High Quality (Slow)</option>
+                    </select>
+                </div>
                 <button onClick={() => setIsPlaying(!isPlaying)} disabled={!audioFile || !!webglError}>
                     {isPlaying ? 'Stop Preview' : 'Play Preview'}
                 </button>

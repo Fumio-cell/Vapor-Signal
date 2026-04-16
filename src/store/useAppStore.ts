@@ -37,6 +37,7 @@ interface AppState {
 
     // Settings
     recipe: RecipeSettings;
+    previewQuality: 'Live' | 'High';
 
     // Actions
     setStatus: (status: AppStatus, progress?: number, errorMessage?: string) => void;
@@ -44,6 +45,7 @@ interface AppState {
     setTimeRange: (inTime: number, outTime: number) => void;
     updateRecipe: (updates: Partial<RecipeSettings>) => void;
     setEstimates: (order: number, turbulence: number, frames: any[]) => void;
+    setPreviewQuality: (quality: 'Live' | 'High') => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -59,6 +61,8 @@ export const useAppStore = create<AppState>((set) => ({
     orderEstimated: 0.5,
     turbulenceEstimated: 0.5,
     analysisFrames: [],
+    
+    previewQuality: 'Live',
 
     recipe: {
         fineness: 0.5,
@@ -88,5 +92,8 @@ export const useAppStore = create<AppState>((set) => ({
         set((state) => ({ recipe: { ...state.recipe, ...updates } })),
 
     setEstimates: (orderEstimated, turbulenceEstimated, analysisFrames) =>
-        set({ orderEstimated, turbulenceEstimated, analysisFrames })
+        set({ orderEstimated, turbulenceEstimated, analysisFrames }),
+
+    setPreviewQuality: (previewQuality) =>
+        set({ previewQuality })
 }));
