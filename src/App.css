@@ -79,12 +79,12 @@
 }
 
 .panel h2 {
+    font-family: 'Fraunces', serif;
     font-size: 1rem;
+    font-weight: 500;
     margin-top: 0;
     margin-bottom: 20px;
     color: var(--color-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 /* Upload Panel */

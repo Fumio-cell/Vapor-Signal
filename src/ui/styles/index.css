@@ -276,8 +276,6 @@ body {
     font-size: 0.7rem;
     font-weight: 500;
     color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
     z-index: 2;
     pointer-events: none;
 }
@@ -301,10 +299,9 @@ body {
 }
 
 .control-section .section-title {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+    font-family: 'Fraunces', serif;
+    font-size: 0.8rem;
+    font-weight: 500;
     color: var(--text-muted);
     margin-bottom: var(--gap-sm);
     padding-bottom: var(--gap-xs);
