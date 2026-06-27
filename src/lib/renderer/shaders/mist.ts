@@ -195,10 +195,10 @@ void main() {
     float alpha = vAge * uDensity * edgeAlpha;
     
     // DoF fade: highly blurred particles become very translucent
-    alpha /= (1.0 + vCoc * 5.0);
-
-    // Base mist color is white/cyan
-    vec3 color = mix(vec3(0.0, 0.8, 1.0), vec3(1.0), vAge);
+    // Base mist color is Dark Gold
+    vec3 darkGold = vec3(0.6, 0.4, 0.05);
+    vec3 brightGold = vec3(1.0, 0.85, 0.4);
+    vec3 color = mix(darkGold, brightGold, vAge);
 
     fragColor = vec4(color, alpha);
 }
