@@ -3,12 +3,12 @@
 **Ambient & Atmospheric Mist Engine** | **アンビエント＆アトモスフェリック・ミストエンジン**
 
 ### [ English ]
-Vapor Signal focuses on the aesthetic degradation and texturization of visual content. Built with advanced WebGL shaders, it introduces organic mist, VHS artifacts, light-leaks, and atmospheric noise to flat images or video. By injecting controlled "vapor" signals into clean media, users can instantly evoke nostalgic, eerie, or deeply atmospheric moods reminiscent of dream states and analog imperfections.
-*   **Key Features:** WebGL Mist/Fog Shaders, Analog Degradation, Color Bleed, Real-time Rendering.
+Vapor Signal turns sound into atmosphere. Upload a WAV file and the tool analyzes it (FFT-based order/turbulence estimation) to drive a real-time WebGL2 GPU particle simulation — up to 300,000 particles forming drifting, organic mist. The result is rendered out as an MP4/MOV video synced to the source audio.
+*   **Key Features:** GPU Particle Simulation (WebGL2), Audio-Driven FFT Analysis, Real-time Rendering, MP4/MOV Export.
 
 ### [ 日本語 ]
-Vapor Signalは、クリーンな画像や映像に対し、意図的な「アナログ的劣化」や「有機的なテクスチャ」を付与するための視覚効果エンジンです。高度なWebGLシェーダーを駆使し、霧（ミスト）の漂い、VHS特有のノイズ、光の漏れ（ライトリーク）などをリアルタイムで重畳します。デジタルでフラットなメディアに対して、夢の中のようなノスタルジックさや、少し不気味で重厚な空気感（アトモスフィア）を即座に作り出します。
-*   **主要機能:** WebGLミスト/フォグシェーダー、アナログ劣化シミュレーション、リアルタイム・レンダリング。
+Vapor Signalは、音を大気感のあるビジュアルへと変換するツールです。WAVファイルをアップロードすると、FFTによる解析(秩序・乱流の推定)が行われ、最大30万個のパーティクルによるリアルタイムWebGL2シミュレーションを駆動します。結果は、元の音声に同期したMP4/MOV動画として書き出されます。
+*   **主要機能:** GPUパーティクルシミュレーション(WebGL2)、音声駆動のFFT解析、リアルタイム・レンダリング、MP4/MOV書き出し。
 
 ---
 *Part of the Poetic Signal Toolkit*
