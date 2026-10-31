@@ -1,26 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { RendererContext } from '../lib/renderer/RendererContext';
 import { MP4Encoder } from '../lib/encoder/MP4Encoder';
 import { remuxMp4ToMov } from '../lib/encoder/FFmpegReMuxer';
+import { DEMO_MODE, DEMO_MAX_SECONDS, IS_PRO, BUY_URL } from '../config';
 
 export const ExportPanel: React.FC = () => {
     const { status, progress, recipe, audioFile, audioBuffer, analysisFrames, setStatus } = useAppStore();
     const [format, setFormat] = useState<'mp4' | 'mov'>('mp4');
     const [resolution, setResolution] = useState<'1080p' | '4K'>('1080p');
     const [fps, setFps] = useState<24 | 30 | 60>(30);
-    const [isPro, setIsPro] = useState(false);
-
-    useEffect(() => {
-        const handleAuth = (e: any) => setIsPro(e.detail.isPro);
-        window.addEventListener('auth:status', handleAuth as EventListener);
-        return () => window.removeEventListener('auth:status', handleAuth as EventListener);
-    }, []);
+    const [demoLimited, setDemoLimited] = useState(false);
 
     const handleGatedAction = (action: () => Promise<void>) => {
-        if (!isPro) {
+        if (!IS_PRO) {
             if (confirm('Exporting in 4K or high framerate is a PRO feature. Would you like to upgrade?')) {
-                window.dispatchEvent(new CustomEvent('app:buyPro'));
+                window.open(BUY_URL, '_blank', 'noopener,noreferrer');
             }
             return;
         }
@@ -50,7 +45,7 @@ export const ExportPanel: React.FC = () => {
 
             const width = resolution === '4K' ? 3840 : 1920;
             const height = resolution === '4K' ? 2160 : 1080;
-            const durationSec = audioBuffer.duration;
+            const durationSec = DEMO_MODE ? Math.min(audioBuffer.duration, DEMO_MAX_SECONDS) : audioBuffer.duration;
             const totalFrames = Math.floor(durationSec * fps);
 
             // 1. Setup Offscreen Renderer
@@ -127,6 +122,7 @@ export const ExportPanel: React.FC = () => {
                     setStatus('idle');
                 }, 100);
             }, 0);
+            if (DEMO_MODE) setDemoLimited(true);
 
         } catch (e: any) {
             console.error("Export Error:", e);
@@ -158,28 +154,34 @@ export const ExportPanel: React.FC = () => {
 
                 <select value={resolution} onChange={(e) => setResolution(e.target.value as any)}>
                     <option value="1080p">1080p</option>
-                    <option value="4K" style={{ backgroundColor: !isPro ? 'rgba(255,165,0,0.1)' : 'inherit' }}>
-                        4K (Lab) {!isPro ? '🔒' : ''}
+                    <option value="4K" style={{ backgroundColor: !IS_PRO ? 'rgba(255,165,0,0.1)' : 'inherit' }}>
+                        4K (Lab) {!IS_PRO ? '🔒' : ''}
                     </option>
                 </select>
 
                 <select value={fps.toString()} onChange={(e) => setFps(parseInt(e.target.value) as any)}>
                     <option value="24">24 FPS</option>
                     <option value="30">30 FPS</option>
-                    <option value="60" style={{ backgroundColor: !isPro ? 'rgba(255,165,0,0.1)' : 'inherit' }}>
-                        60 FPS {!isPro ? '🔒' : ''}
+                    <option value="60" style={{ backgroundColor: !IS_PRO ? 'rgba(255,165,0,0.1)' : 'inherit' }}>
+                        60 FPS {!IS_PRO ? '🔒' : ''}
                     </option>
                 </select>
 
                 <button 
                     onClick={handleExport} 
                     disabled={status !== 'idle'}
-                    className={(resolution === '4K' || fps === 60) && !isPro ? 'gated' : ''}
+                    className={(resolution === '4K' || fps === 60) && !IS_PRO ? 'gated' : ''}
                 >
-                    Export Video
+                    {DEMO_MODE ? 'Export Video (10s preview)' : 'Export Video'}
                 </button>
                 <button onClick={handleRecipeExport}>Save Recipe</button>
                 {status !== 'idle' && <button>Cancel / Working...</button>}
+                {DEMO_MODE && demoLimited && (
+                    <p className="demo-notice">
+                        Demo export is limited to {DEMO_MAX_SECONDS} seconds.{' '}
+                        <a href={BUY_URL} target="_blank" rel="noopener noreferrer">Get the full version</a>
+                    </p>
+                )}
             </div>
 
             <div className="progress-bar-container">
