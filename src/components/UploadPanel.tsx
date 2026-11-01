@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { useAppStore } from '../store/useAppStore';
+import { decodeAudioFile } from '../lib/audio/decodeAudioFile';
 
 export const UploadPanel: React.FC = () => {
     const { audioFile, setAudio, inTime, outTime, setTimeRange } = useAppStore();
@@ -9,16 +10,12 @@ export const UploadPanel: React.FC = () => {
         const file = event.target.files?.[0];
         if (!file) return;
 
-        if (!file.name.toLowerCase().endsWith('.wav')) {
-            alert('Please upload a WAV file for best results.');
-        }
-
         useAppStore.getState().setStatus('analyzing');
 
         const arrayBuffer = await file.arrayBuffer();
         const audioContext = new AudioContext(); // temporary for decoding lengths, worker will redo analysis
         try {
-            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+            const audioBuffer = await decodeAudioFile(audioContext, arrayBuffer);
             setAudio(file, audioBuffer);
 
             // We only need a mono mix for analysis
@@ -47,7 +44,7 @@ export const UploadPanel: React.FC = () => {
 
         } catch (e) {
             console.error(e);
-            alert('Failed to decode audio file');
+            alert(`Failed to decode audio file (${e instanceof Error ? e.message : String(e)})`);
             useAppStore.getState().setStatus('idle');
         }
     };
@@ -59,7 +56,7 @@ export const UploadPanel: React.FC = () => {
             <div className="upload-section">
                 <input
                     type="file"
-                    accept="audio/wav,audio/*"
+                    accept="audio/wav,audio/aiff,audio/x-aiff,audio/mpeg,audio/*,.wav,.aif,.aiff,.aifc,.mp3,.m4a"
                     ref={fileInputRef}
                     style={{ display: 'none' }}
                     onChange={handleFileUpload}
